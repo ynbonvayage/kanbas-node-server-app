@@ -111,7 +111,6 @@ const Lab5 = (app) => {
 
     app.get("/a5/todos", (req, res) => {
         const { completed } = req.query;
-        console.log(completed);
         if (completed !== undefined) {
             const completedTodos = todos.filter(
                 (t) => String(t.completed) === completed);
