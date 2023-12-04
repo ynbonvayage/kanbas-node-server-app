@@ -14,7 +14,8 @@ const DB_CONNECTION = process.env.DB_CONNECTION || "mongodb://127.0.0.1:27017/ka
 mongoose.connect(DB_CONNECTION);
 const app = express()
 app.use(cors({credentials: true,
-        origin: process.env.FRONTEND_URL || "http://localhost:3000",
+        origin: process.env.FRONTEND_URL ?
+            new RegExp(`.*${process.env.FRONTEND_URL}.*`) : "http://localhost:3000",
     }
 ));
 const sessionOptions = {
