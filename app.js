@@ -9,18 +9,27 @@ import "dotenv/config";
 import UserRoutes from "./users/routes.js";
 import AssignmentsRoutes from "./assignments/routes.js";
 import mongoose from "mongoose";
-mongoose.connect("mongodb://127.0.0.1:27017/kanbas");
+
+const DB_CONNECTION = process.env.DB_CONNECTION || "mongodb://127.0.0.1:27017/kanbas";
+mongoose.connect(DB_CONNECTION);
 const app = express()
 app.use(cors({credentials: true,
-        origin: "http://localhost:3000",
+        origin: process.env.FRONTEND_URL || "http://localhost:3000",
     }
 ));
-
 const sessionOptions = {
     secret: "any string",
     resave: false,
     saveUninitialized: false,
 };
+if (process.env.FRONTEND_URL) {
+    sessionOptions.proxy = true;
+    sessionOptions.cookie = {
+        sameSite: "none",
+        secure: true,
+    };
+}
+
 app.use(
     session(sessionOptions)
 );
